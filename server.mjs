@@ -1,5 +1,6 @@
 import express from "express";
 import dataBase from "./DATABASE/database.mjs";
+import dotenv, { config, configDotenv } from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import register from "./controller/regAuth.mjs";
@@ -11,13 +12,15 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import trackPackage from "./controller/trackPackage.mjs";
 
+dotenv.config({path: "./.env"});
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_API,
     methods: ['GET', "POST", "PUT", "DELETE"],
     credentials: true
 }));
