@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(cors({
-    origin: process.env.CLIENT_API,
+    origin: "https://cp-truck.netlify.app",
     methods: ['GET', "POST", "PUT", "DELETE"],
     credentials: true
 }));
