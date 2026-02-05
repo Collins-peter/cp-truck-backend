@@ -12,6 +12,11 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import trackPackage from "./controller/trackPackage.mjs";
 
+//***ADMIN IMPORT*******/
+import createPackage from "./controller/Admin Tracker/createPackage.mjs";
+import adminTrackPackage from "./controller/Admin Tracker/adminTrackPackage.mjs";
+import updateStatus from "./controller/Admin Tracker/updateStatus.mjs";
+
 dotenv.config({path: "./.env"});
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,7 +35,6 @@ app.use(cookieParser());
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 
 //ROUTE TO REGISTRATION
 app.post("/register", register);
@@ -53,6 +57,19 @@ app.get("/protected", verifyToken, (req, res) => {
 app.post("/upload-image", verifyToken, uploadImage);
 
 
+//****************ADMIN TRACKING API*********/
+//SOCKET CONNECTION
+io.on("connection", (socket) => {
+    console.log("Client Connected:" , socket.id);
+});
+
+//ROUTERS
+app.post("/admin/create-tracker", createPackage);
+app.put("/admin/update-status", updateStatus);
+app.get("/admin/track-package/:trackId", adminTrackPackage);
+
+//MAKING io AVAILABLE GLOBALLY FOR CONTROLLER
+global.io = io;
 
 
 const PORT = process.env.PORT || 3001;
